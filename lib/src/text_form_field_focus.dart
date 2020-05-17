@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 
 /// Validates only after the field has been focused, and on any change after
 /// that.
-class EasyFocusTextFormField extends StatefulWidget {
-  EasyFocusTextFormField({
+class EasyTextFormFieldFocus extends StatefulWidget {
+  EasyTextFormFieldFocus({
     Key key,
     this.textFormFieldKey,
     this.autocorrect = true,
@@ -98,10 +98,10 @@ class EasyFocusTextFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   
   @override
-  State createState() => _EasyFocusTextFormFieldState();
+  State createState() => _EasyTextFormFieldFocusState();
 }
 
-class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
+class _EasyTextFormFieldFocusState extends State<EasyTextFormFieldFocus> {
   FocusNode _focus;
   bool _autovalidate = false;
 
@@ -121,7 +121,7 @@ class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
   }
 
   @override
-  void didUpdateWidget(EasyFocusTextFormField oldWidget) {
+  void didUpdateWidget(EasyTextFormFieldFocus oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.focusNode != widget.focusNode) {
