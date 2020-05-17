@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Validates only after the field has been focused, and on any change after
-/// that.
-class EasyTextFormFieldFocus extends StatefulWidget {
-  EasyTextFormFieldFocus({
+/// Validates only when the field is unfocused.
+class EasyTextFormFieldUnfocus extends StatefulWidget {
+  EasyTextFormFieldUnfocus({
     Key key,
-    this.textFormFieldKey,
+    GlobalKey<FormFieldState> textFormFieldKey,
     this.autocorrect = true,
     this.autofocus = false,
     this.buildCounter,
@@ -50,7 +49,8 @@ class EasyTextFormFieldFocus extends StatefulWidget {
     this.textInputAction,
     this.toolbarOptions,
     this.validator,
-  }) : super(key: key);
+  }) : this.textFormFieldKey = textFormFieldKey ?? GlobalKey<FormFieldState>(),
+       super(key: key);
   
   final bool autocorrect;
   final bool autofocus;
@@ -98,18 +98,15 @@ class EasyTextFormFieldFocus extends StatefulWidget {
   final FormFieldValidator<String> validator;
   
   @override
-  State createState() => _EasyTextFormFieldFocusState();
+  State createState() => _EasyTextFormFieldUnfocusState();
 }
 
-class _EasyTextFormFieldFocusState extends State<EasyTextFormFieldFocus> {
+class _EasyTextFormFieldUnfocusState extends State<EasyTextFormFieldUnfocus> {
   FocusNode _focusNode;
-  bool _autovalidate = false;
 
   void _focusListener() {
-    if (_focusNode.hasFocus && !_autovalidate) {
-      setState(() {
-        _autovalidate = true;
-      });
+    if (!_focusNode.hasFocus) {
+      widget.textFormFieldKey.currentState.validate();
     }
   }
   
@@ -121,7 +118,7 @@ class _EasyTextFormFieldFocusState extends State<EasyTextFormFieldFocus> {
   }
 
   @override
-  void didUpdateWidget(EasyTextFormFieldFocus oldWidget) {
+  void didUpdateWidget(EasyTextFormFieldUnfocus oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.focusNode != widget.focusNode) {
@@ -141,7 +138,7 @@ class _EasyTextFormFieldFocusState extends State<EasyTextFormFieldFocus> {
     return TextFormField(
       autocorrect: widget.autocorrect,
       autofocus: widget.autofocus,
-      autovalidate: _autovalidate,
+      autovalidate: false,
       buildCounter: widget.buildCounter,
       controller: widget.controller,
       cursorColor: widget.cursorColor,
