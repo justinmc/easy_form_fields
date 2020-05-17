@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FocusTextFormField extends StatefulWidget {
-  FocusTextFormField({
+/// Validates only after the field has been focused, and on any change after
+/// that.
+class EasyFocusTextFormField extends StatefulWidget {
+  EasyFocusTextFormField({
     Key key,
     this.decoration,
     this.keyboardType,
@@ -17,10 +19,10 @@ class FocusTextFormField extends StatefulWidget {
   final FormFieldValidator<String> validator;
   
   @override
-  State createState() => FocusTextFormFieldState();
+  State createState() => _EasyFocusTextFormFieldState();
 }
 
-class FocusTextFormFieldState extends State<FocusTextFormField> {
+class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
   final FocusNode _focus = FocusNode();
   bool _autovalidate = false;
