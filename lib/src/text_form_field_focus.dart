@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Validates only after the field has been focused, and on any change after
-/// that.
+/// Validates when the field has been focused and on any change after that.
 class EasyTextFormFieldFocus extends StatefulWidget {
   EasyTextFormFieldFocus({
     Key key,
