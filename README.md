@@ -6,3 +6,10 @@ This library exports several variations on [TextFormField](https://master-api.fl
 
 ### EasyFocusTextFormField
 Validates only after the field has been focused, and on any change after that.
+
+### Others?
+Have a use case that's different than any of the given classes?  Please file an issue or open a pull request!
+
+If you want to roll your own solution, it may also be useful to take a look at the source code of the closest class to what you want. Copy it into your project and make the necessary modifications.
+
+Lastly, don't forget that the default behavior of a TextFormField in Flutter is to validate only on submit, so if that's the behavior you want, there is no need for this libarary!

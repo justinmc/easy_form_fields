@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 class EasyFocusTextFormField extends StatefulWidget {
   EasyFocusTextFormField({
     Key key,
+    this.textFormFieldKey,
     this.autocorrect = true,
     this.autofocus = false,
     this.buildCounter,
@@ -66,6 +67,7 @@ class EasyFocusTextFormField extends StatefulWidget {
   final FocusNode focusNode;
   final String initialValue;
   final List<TextInputFormatter> inputFormatters;
+  final Key textFormFieldKey;
   final Brightness keyboardAppearance;
   final TextInputType keyboardType;
   final bool maxLengthEnforced;
@@ -100,20 +102,38 @@ class EasyFocusTextFormField extends StatefulWidget {
 }
 
 class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
-  final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
-  final FocusNode _focus = FocusNode();
+  FocusNode _focus;
   bool _autovalidate = false;
+
+  void _focusListener() {
+    if (_focus.hasFocus && !_autovalidate) {
+      setState(() {
+        _autovalidate = true;
+      });
+    }
+  }
   
   @override
   void initState() {
     super.initState();
-    _focus.addListener(() {
-      if (_focus.hasFocus && !_autovalidate) {
-        setState(() {
-          _autovalidate = true;
-        });
-      }
-    });
+    _focus = widget.focusNode ?? FocusNode();
+    _focus.addListener(_focusListener);
+  }
+
+  @override
+  void didUpdateWidget(EasyFocusTextFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.focusNode != widget.focusNode) {
+      _focus.removeListener(_focusListener);
+      _focus = widget.focusNode ?? FocusNode();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _focus.removeListener(_focusListener);
   }
   
   @override
@@ -135,7 +155,7 @@ class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
       focusNode: _focus,
       initialValue: widget.initialValue,
       inputFormatters: widget.inputFormatters,
-      key: _key,
+      key: widget.textFormFieldKey,
       keyboardAppearance: widget.keyboardAppearance,
       keyboardType: widget.keyboardType,
       maxLength: widget.maxLength,
@@ -146,11 +166,7 @@ class _EasyFocusTextFormFieldState extends State<EasyFocusTextFormField> {
       obscureText: widget.obscureText,
       onChanged: widget.onChanged,
       onEditingComplete: widget.onEditingComplete,
-      onFieldSubmitted: (String value) {
-        _focus.unfocus();
-        FocusScope.of(context).requestFocus(_focus);
-        widget.onFieldSubmitted(value);
-      },
+      onFieldSubmitted: widget.onFieldSubmitted,
       onSaved: widget.onSaved,
       onTap: widget.onTap,
       readOnly: widget.readOnly,
