@@ -1,6 +1,6 @@
 name: easy_form_fields
 description: A set of pre-built form fields you can quickly import to do validation in various common scenarios.
-version: 0.0.1
+version: 0.0.2
 repository: https://github.com/justinmc/easy_form_fields
 issue_tracker: https://github.com/justinmc/easy_form_fields/issues
 
